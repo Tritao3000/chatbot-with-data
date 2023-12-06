@@ -1,32 +1,31 @@
-"use client";
-import { useState, useRef, useEffect } from "react";
-import { Message } from "@/types/message";
-import { Send } from "react-feather";
-import LoadingDots from "@/components/LoadingDots";
+'use client';
+import { useState, useRef, useEffect } from 'react';
+import { Message } from '@/types/message';
+import { Send } from 'react-feather';
+import LoadingDots from '@/components/LoadingDots';
 
 export default function Home() {
-  const [message, setMessage] = useState<string>("");
+  const [message, setMessage] = useState<string>('');
   const [history, setHistory] = useState<Message[]>([
     {
-      role: "assistant",
-      content:
-        "Hello! Ask me legal questions about immigration to the Netherlands.",
+      role: 'assistant',
+      content: 'Hello! Ask me questions about Augusta Labs',
     },
   ]);
   const lastMessageRef = useRef<HTMLDivElement | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
 
   const handleClick = () => {
-    if (message == "") return;
+    if (message == '') return;
     setHistory((oldHistory) => [
       ...oldHistory,
-      { role: "user", content: message },
+      { role: 'user', content: message },
     ]);
-    setMessage("");
+    setMessage('');
     setLoading(true);
-    fetch("/api/chat", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
+    fetch('/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ query: message, history: history }),
     })
       .then(async (res) => {
@@ -41,11 +40,11 @@ export default function Home() {
 
   const formatPageName = (url: string) => {
     // Split the URL by "/" and get the last segment
-    const pageName = url.split("/").pop();
+    const pageName = url.split('/').pop();
 
     // Split by "-" and then join with space
     if (pageName) {
-      const formattedName = pageName.split("-").join(" ");
+      const formattedName = pageName.split('-').join(' ');
 
       // Capitalize only the first letter of the entire string
       return formattedName.charAt(0).toUpperCase() + formattedName.slice(1);
@@ -55,7 +54,7 @@ export default function Home() {
   //scroll to bottom of chat
   useEffect(() => {
     if (lastMessageRef.current) {
-      lastMessageRef.current.scrollIntoView({ behavior: "smooth" });
+      lastMessageRef.current.scrollIntoView({ behavior: 'smooth' });
     }
   }, [history]);
 
@@ -76,7 +75,7 @@ export default function Home() {
             {history.map((message: Message, idx) => {
               const isLastMessage = idx === history.length - 1;
               switch (message.role) {
-                case "assistant":
+                case 'assistant':
                   return (
                     <div
                       ref={isLastMessage ? lastMessageRef : null}
@@ -114,7 +113,7 @@ export default function Home() {
                       </div>
                     </div>
                   );
-                case "user":
+                case 'user':
                   return (
                     <div
                       className="w-auto max-w-xl break-words bg-white rounded-b-xl rounded-tl-xl text-black p-6 self-end shadow-[0_10px_40px_0px_rgba(0,0,0,0.15)]"
@@ -155,7 +154,7 @@ export default function Home() {
                 placeholder="Type a message"
                 className="w-full h-full resize-none rounded-full border border-slate-900/10 bg-white pl-6 pr-24 py-[25px] text-base placeholder:text-slate-400 focus:border-violet-500 focus:outline-none focus:ring-4 focus:ring-violet-500/10 shadow-[0_10px_40px_0px_rgba(0,0,0,0.15)]"
                 onKeyDown={(e) => {
-                  if (e.key === "Enter" && !e.shiftKey) {
+                  if (e.key === 'Enter' && !e.shiftKey) {
                     e.preventDefault();
                     handleClick();
                   }
