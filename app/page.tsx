@@ -1,5 +1,7 @@
 'use client';
 import { useState, useRef, useEffect } from 'react';
+import Image from 'next/image';
+import Link from 'next/link';
 import { Message } from '@/types/message';
 import { Send } from 'react-feather';
 import LoadingDots from '@/components/LoadingDots';
@@ -61,11 +63,11 @@ export default function Home() {
   return (
     <main className="h-screen bg-white p-6 flex flex-col">
       <div className="flex flex-col gap-8 w-full items-center flex-grow max-h-full">
-        <h1 className=" text-4xl text-transparent font-extralight bg-clip-text bg-gradient-to-r from-violet-800 to-fuchsia-500">
-          IND chat
+        <h1 className=" text-4xl text-transparent font-extralight bg-clip-text bg-gradient-to-r from-black/80 to-black">
+          AugustaGPT
         </h1>
         <form
-          className="rounded-2xl border-purple-700 border-opacity-5  border lg:w-3/4 flex-grow flex flex-col bg-[url('/images/bg.png')] bg-cover max-h-full overflow-clip"
+          className="rounded-2xl border-black border-opacity-5  border lg:w-3/4 flex-grow flex flex-col bg-slate-100 bg-cover max-h-full overflow-clip"
           onSubmit={(e) => {
             e.preventDefault();
             handleClick();
@@ -82,13 +84,16 @@ export default function Home() {
                       key={idx}
                       className="flex gap-2"
                     >
-                      <img
-                        src="images/assistant-avatar.png"
+                      <Image
+                        alt="logo"
+                        src="/images/augusta.jpg"
+                        width={100}
+                        height={100}
                         className="h-12 w-12 rounded-full"
                       />
                       <div className="w-auto max-w-xl break-words bg-white rounded-b-xl rounded-tr-xl text-black p-6 shadow-[0_10px_40px_0px_rgba(0,0,0,0.15)]">
-                        <p className="text-sm font-medium text-violet-500 mb-2">
-                          AI assistant
+                        <p className="text-sm font-semibold text-black mb-2">
+                          AugustaGPT
                         </p>
                         {message.content}
                         {message.links && (
@@ -99,13 +104,13 @@ export default function Home() {
 
                             {message.links?.map((link) => {
                               return (
-                                <a
+                                <Link
                                   href={link}
                                   key={link}
                                   className="block w-fit px-2 py-1 text-sm  text-violet-700 bg-violet-100 rounded"
                                 >
                                   {formatPageName(link)}
-                                </a>
+                                </Link>
                               );
                             })}
                           </div>
@@ -120,7 +125,7 @@ export default function Home() {
                       key={idx}
                       ref={isLastMessage ? lastMessageRef : null}
                     >
-                      <p className="text-sm font-medium text-violet-500 mb-2">
+                      <p className="text-sm font-semibold text-black mb-2">
                         You
                       </p>
                       {message.content}
@@ -130,13 +135,16 @@ export default function Home() {
             })}
             {loading && (
               <div ref={lastMessageRef} className="flex gap-2">
-                <img
-                  src="images/assistant-avatar.png"
+                <Image
+                  alt="logo"
+                  src="/images/augusta.jpg"
                   className="h-12 w-12 rounded-full"
+                  width={100}
+                  height={100}
                 />
                 <div className="w-auto max-w-xl break-words bg-white rounded-b-xl rounded-tr-xl text-black p-6 shadow-[0_10px_40px_0px_rgba(0,0,0,0.15)]">
-                  <p className="text-sm font-medium text-violet-500 mb-4">
-                    AI assistant
+                  <p className="text-sm font-semibold text-black mb-4">
+                    AugustaGPT
                   </p>
                   <LoadingDots />
                 </div>
@@ -152,7 +160,7 @@ export default function Home() {
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
                 placeholder="Type a message"
-                className="w-full h-full resize-none rounded-full border border-slate-900/10 bg-white pl-6 pr-24 py-[14px] text-base placeholder:text-slate-400 focus:border-violet-500 focus:outline-none focus:ring-4 focus:ring-violet-500/10 shadow-[0_10px_40px_0px_rgba(0,0,0,0.15)]"
+                className="w-full h-full resize-none rounded-full border border-slate-900/10 bg-white pl-6 pr-24 py-[14px] text-base placeholder:text-slate-400 focus:border-slate-900 focus:outline-none focus:ring-4 focus:ring-slate-500/10 shadow-[0_10px_40px_0px_rgba(0,0,0,0.15)]"
                 onKeyDown={(e) => {
                   if (e.key === 'Enter' && !e.shiftKey) {
                     e.preventDefault();
@@ -165,7 +173,7 @@ export default function Home() {
                   e.preventDefault();
                   handleClick();
                 }}
-                className="flex w-10 h-10 items-center justify-center rounded-full px-3 text-sm  bg-violet-600 font-semibold text-white hover:bg-violet-700 active:bg-violet-800 absolute right-2 bottom-2 disabled:bg-violet-100 disabled:text-violet-400"
+                className="flex w-10 h-10 items-center justify-center rounded-full px-3 text-sm  bg-black font-semibold text-white hover:bg-black/70 active:bg-black/90 absolute right-2 bottom-2 disabled:bg-slate-100 disabled:text-black"
                 type="submit"
                 aria-label="Send"
                 disabled={!message || loading}
