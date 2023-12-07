@@ -31,8 +31,12 @@ export default function Home() {
       body: JSON.stringify({ query: message, history: history }),
     })
       .then(async (res) => {
-        const r = await res.json();
-        setHistory((oldHistory) => [...oldHistory, r]);
+        if (res.ok) {
+          const r = await res.json();
+          setHistory((oldHistory) => [...oldHistory, r]);
+        } else {
+          console.error('HTTP error:', res.status);
+        }
         setLoading(false);
       })
       .catch((err) => {
