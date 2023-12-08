@@ -4,7 +4,7 @@ import { PineconeStore } from 'langchain/vectorstores/pinecone';
 import { OpenAIEmbeddings } from 'langchain/embeddings/openai';
 import { ConversationalRetrievalQAChain } from 'langchain/chains';
 import { RecursiveCharacterTextSplitter } from 'langchain/text_splitter';
-import { PDFLoader } from 'langchain/document_loaders/fs/pdf';
+import { UnstructuredLoader } from 'langchain/document_loaders/fs/unstructured';
 import { STANDALONE_QUESTION_TEMPLATE, QA_TEMPLATE } from './prompt_template';
 
 async function initChain() {
@@ -15,25 +15,32 @@ async function initChain() {
   });
 
   const pineconeIndex = pinecone.Index(process.env.PINECONE_INDEX ?? '');
-
-  let loaders = [new PDFLoader('/public/ro.pdf')];
+  console.log('will be loaded');
+  let loaders = [new UnstructuredLoader('https://augustalabs.co')];
+  console.log('was loaded');
   let pages = [];
   for (let loader of loaders) {
     pages.push(...(await loader.load()));
   }
+  console.log('was added');
+
   let text_splitter = new RecursiveCharacterTextSplitter({
     chunkSize: 500,
     chunkOverlap: 50,
   });
   let docs = text_splitter.splitDocuments(pages);
+  console.log('was splitted');
+
   const documents = await docs;
 
   // Create vector store
+  console.log('docs will be updated');
   await PineconeStore.fromDocuments(documents, new OpenAIEmbeddings({}), {
     pineconeIndex: pineconeIndex,
     namespace: process.env.PINECONE_NAME_SPACE,
     textKey: 'text',
   });
+  console.log('docs updated');
   const vectorStore = await PineconeStore.fromExistingIndex(
     new OpenAIEmbeddings({}),
     {
